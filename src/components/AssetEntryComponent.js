@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, FormFeedback, Label, Input, FormText } from 'reactstrap';
 
 
-function store() {
+class Assetentry extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            assettag: '',
+            touched: {
+                assettag: false
+            }
+        };
+        
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    store() {
     var inputAssetTag = document.getElementById("assettag");
     var serialnumberinput = document.getElementById("serialnumberinput");
     var modelinput = document.getElementById("modelinput");
@@ -21,35 +35,60 @@ function store() {
         "PurchaseCost":purchasecostinput.value}];
         localStorage.setItem('test1', JSON.stringify(test1));
     }else{
-        let newItem = [{"AssetTag": inputAssetTag.value,"SerialNumber": serialnumberinput.value,"ModelInput": modelinput.value,"StatusInput":statusinput.value,
-        "AssetName": assetnameinput.value,"Purchase Date": purchasedateinput.value,"Supplier":supplierinput.value,"Order Num":ordernumberinput.value,
-        "Purchase Cost":purchasecostinput.value}];
+        let newItem = [{"AssetTag": inputAssetTag.value,"SerialNumber": serialnumberinput.value,"Modelinput": modelinput.value,"Statusinput":statusinput.value,
+        "AssetName": assetnameinput.value,"PurchaseDate": purchasedateinput.value,"Supplier":supplierinput.value,"OrderNum":ordernumberinput.value,
+        "PurchaseCost":purchasecostinput.value}];
         oldItems.push(newItem[0]);
         localStorage.setItem('test1', JSON.stringify(oldItems));
     }
 
      
-}
+    }
 
+    validate(assettag){
+        const errors ={
+            assettag: ''
+        };
+        
+        if(this.state.touched.assettag){
+            if(assettag.length < 3){
+                errors.assettag = "Asset tag must be longer than 2";
+            }
+        }
 
-const Assetentry = () => 
-{
-    
+        return errors;
+    }
+    handleInputChange(event) {
+        this.setState ({
+            assettag: event.target.value
+        })
+    }
+
+//const Assetentry = () => 
+    handleBlur = (field) => () => {
+        this.setState({
+            touched: {...this.state.touched, [field]: true}
+        });
+    }
+    render(){
+    const errors = this.validate(this.state.assettag);
     return (
         <main id="main">
             <div className="container">
                 <div className="form-container">
                     <div className="row">
                         <div className="col-md-12">
-                            <form>
-                                <div className="form-row">
+                            <Form>
+                                <FormGroup>
                                     <label for="AssetTag">Asset Tag</label>
-                                    <input type="text" className="form-control" id="assettag" aria-describedby="assettag"
-                                        placeholder="Enter AssetTag" />
-                                    <small id="emailHelp" className="form-text text-muted">We'll never share your email with
-                                        anyone
-                                        else.</small>
-                                </div>
+                                    <input type="text" className="form-control" id="assettag" 
+                                        placeholder="Enter AssetTag" value={this.state.assettag} onChange={this.handleInputChange}
+                                         onBlur={this.handleBlur("assettag")} invalid={errors.assettag} 
+                                        />
+                                    <large className="form-text text-muted">{this.state.assettag}</large>
+                                    <FormFeedback>{errors.assettag}</FormFeedback>
+                                    <small id="assetHelp" className="form-text text-muted">Asset Tag will be utilized as a key id.</small>
+                                </FormGroup>
                                 <div className="form-group">
                                     <label for="serialnumberinput">Serial</label>
                                     <input type="text" className="form-control" id="serialnumberinput"
@@ -86,14 +125,15 @@ const Assetentry = () =>
                                     <input type="text" className="form-control" id="purchasecostinput"
                                         placeholder="XXXXXXXXX"/>
                                 </div>
-                                <button onClick={store} type="submit" className="btn btn-primary">Submit</button>
-                            </form>
+                                <button onClick={this.store} type="submit" className="btn btn-primary">Submit</button>
+                            </Form>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     )
+}
 }
 
 export default Assetentry;

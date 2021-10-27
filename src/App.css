@@ -7,15 +7,15 @@
   border: none;
   min-height: 50px;
   border-radius: 0;
-  background-color: #000000 !important;
-  
+  background-color: #313a46 !important;
+  border-radius: 0px !important;
 }
 
 .navbar-custom {
-  width: 100%;
+  float: right;
 }
 
-.navbar-nav > li {
+.nav > li {
   list-style-type: none;
 
 }
@@ -119,10 +119,11 @@ body {
   .body-header {
     padding: 15px 15px 0;
     padding-bottom: 20px;
+    background-color:rgba(3, 3, 3, 0.692) ;
+    color: white;
     }
 
-    .body-header > h1 {
-        font-size: 24px;
+    .body-header > p {
         padding-left: 10px;
         font-family: "Nunito",sans-serif;
 
@@ -134,18 +135,42 @@ body {
     }
 
     .card {
-      border: none;
-      box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
-      margin-bottom: 24px;
-      
+      border: 0;
+      border-radius: .1875rem;
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 15px 1px rgb(39 39 39 / 10%);
   }
 
+  .card-body .statistics {
+    position: relative;
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  .card-body [class*=col-] .statistics:after {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    width: 1px;
+    height: calc(100% - 40px);
+    content: "";
+    background: #ddd;
+}
     .card-body h4, h6 {
       font-size: .9375rem;
       color:#6c757d;
       font-family: "Nunito",sans-serif;
     }
   
+    .card-category {
+      font-size: 1em;
+      text-transform: capitalize;
+      font-weight: 400;
+      color: #9a9a9a;
+    }
     .card-body p {
       font-size: .9375rem;
     }
@@ -159,16 +184,10 @@ body {
       font-size: 24px;
     }
     .main-table {
-      margin-top: 100px;
-      margin-bottom: 100px;
     }
 
     .table-responsive {
       max-height: 300px;
-    }
-
-    .table > tbody {
-      color: #7b7b7b
     }
 
 

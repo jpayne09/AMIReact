@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron } from 'reactstrap';
+import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron, Button } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
 function openNav() {
@@ -12,18 +12,21 @@ class Header extends Component {
     render(){
         return(
             //Top Navigation Bar
-            <Navbar color="dark" dark expand="md" id="navbar">
-                <Nav navbar className="mr-auto">
+            <Navbar id="navbar">
+                <div>
                     <NavItem>
-                    <a href="#" styles="font-size:100px" onClick={() => openNav()}>
-                    Open Navigation Pane
-                    </a>
+                    <a onClick={() => openNav()}>
+                        Open Navigation Pane</a>
                     </NavItem>
                     <NavItem>
-                    <input type="text" placeholder="Search..."></input>
-                    <span><button class="btn btn-primary">Search</button></span>                  
+                    <ul className="navbar-custom">
+                        <li>
+                            <input id="inputText" type="text"></input>
+                            <Button>Search</Button>
+                        </li>
+                    </ul>
                     </NavItem>
-                </Nav>
+                </div>
             </Navbar>
         );
     }

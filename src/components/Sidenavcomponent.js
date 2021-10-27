@@ -28,7 +28,9 @@ class Sidenav extends Component {
                 <NavLink className="nav-link" to="/inventory">
                         <i className="fa fa-fw fa-user"></i> Inventory
                 </NavLink>
-                <a href="contact.html"><i class="fa fa-fw fa-envelope"></i>Contact</a>
+                <NavLink className="nav-link" to="/contact">
+                    <i className="fa fa-fw fa-envelope"></i> Contact
+                </NavLink>
                 <a href="#">Cloud Resources</a>
                 <a href="#">Licenses</a>
                 <a href="#">Accesories</a>
