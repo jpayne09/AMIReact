@@ -1,73 +1,126 @@
 import React, { Component, useMemo, useState, useEffect } from "react";
-import { Table, Card, CardBody, CardHeader } from 'reactstrap';
+import { Table, Card, CardBody, CardHeader,CardTitle } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-class Inventory extends Component {
+function handleClick(assettag){
+    return (
+        window.location = `http://localhost:3000/inventory/${assettag}`
+        
+    )
+}
+
+function RenderInventory({ asset }) {
+
+    return (
+        <>
+        <td onClick={values => handleClick(asset.AssetTag)}>{asset.AssetTag}</td><td>{asset.SerialNumber}</td><td>{asset.Modelinput}</td><td>{asset.Statusinput}</td><td>{asset.AssetName}</td>
+            <td>{asset.Supplier}</td><td>{asset.OrderNum}</td><td>{asset.PurchaseDate}</td><td>{asset.PurchaseCost}</td>
+        </>
+    );
+}
+
+
+class SearchBar extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+    }
+
+    handleFilterTextChange(e){
+        this.props.onFilterTextChange(e.target.value);
+    }
+    render() {
+      const filterText = this.props.filterText;  
+      return (
+          <main className="main">
+              <div className="container">
+                  <Card>
+                      <CardHeader>
+                        <label>Search and Table Component</label>
+                        <div>
+                        <span>-------------------------</span>
+                        </div>
+                       </CardHeader>
+                       <CardBody>
+                          <form>
+                              <input
+                                  type="text"
+                                  placeholder="Search..."
+                                  value={this.props.filterText}
+                                  onChange={this.handleFilterTextChange}
+                              />
+                          </form>
+                        </CardBody>
+                  </Card>
+              </div>
+        </main>
+      );
+    }
+  }
+
+class FilterTable extends Component{
     constructor(props){
         super(props);
         this.state = {
-            assetData: JSON.parse(localStorage.getItem('test1')),
-            inventory: []
+            filterText: ''
         }
-        this.LoadData = this.LoadData.bind(this);
+        this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
     }
 
-    LoadData(){
-        var searchInput = document.getElementById("searchInput")
-        
-        if (this.state.assetData != null) {
-            {this.state.assetData.filter(asset => asset.AssetTag === searchInput.value).map(filteredAsset =>(
-               this.setState({
-                   inventory: filteredAsset
-               })
-            ))}
-            
-        }
-        console.log(this.state.inventory)
-    }
+    handleFilterTextChange(filterText) {
+        this.setState({
+          filterText: filterText
+        });
+      }
     render(){
-        //var searchInput = document.getElementById("searchInput")
-    
-        if (this.state.assetData != null) {
-            this.state.inventory = this.state.assetData.map(asset => {
-                return (
-                    <tr key={asset.AssetTag}>
-                        <RenderInventory asset={asset} />
-                    </tr>
+        return(
+            <div>
+                <SearchBar
+                    filterText={this.state.filterText}
+                    onFilterTextChange={this.handleFilterTextChange}
+                />
+                <Inventory
+                    assetData={this.props.assetData}
+                    filterText={this.state.filterText}
+                />
+            </div>
+        )        
+
+    }
+}
+class Inventory extends Component{
+    render(){
+        const filterText = this.props.filterText;
+        const inventory = [];
+        this.props.assetData.forEach((asset) => {
+            if(asset.AssetTag.indexOf(filterText) === -1){
+                return
+            }
+            inventory.push(
+                <tr key={asset.AssetTag}>
+                    <RenderInventory asset={asset} />
+                </tr>
                 )
-                
-            });
+        });
+        /**if (this.props.assetData != null) {
+                var inventory = this.props.assetData.map(asset => {
+                    return (
+                        <tr key={asset.AssetTag}>
+                            <RenderInventory asset={asset} />
+                        </tr>
+                    )   
+                });
         }
-
-        function RenderInventory({ asset }) {
-
-            return (
-                <><td>{asset.AssetTag}</td><td>{asset.SerialNumber}</td><td>{asset.Modelinput}</td><td>{asset.Statusinput}</td><td>{asset.AssetName}</td>
-                    <td>{asset.Supplier}</td><td>{asset.OrderNum}</td><td>{asset.PurchaseDate}</td><td>{asset.PurchaseCost}</td>
-                </>
-            );
-        }
-
+        **/
     return (
         <main className="main">
             <div className="container">
                 <Card>
                     <div className="hardware-table" styles="background-color: rgb(240, 240, 240);">
-                        <span>Asset Inventory System </span>
-                        <div className="row">
-                            <div className="col-12">
-                                <input id="searchInput" type="text" />
-                            </div>
-                            
-                            <div className="col-4">
-                                <button onClick={() => "addInput()"} id="addInput" className="btn btn-primary" value="addInput">
-                                    <i className="fa"></i> Go
-                                </button>
-                                <button onClick={() => this.LoadData()}  id="addLoadData" className="btn btn-primary">
-                                    <i className="fa"></i> Load Data
-                                </button>
-                            </div>
-                        </div>
+                        <label>Asset Inventory System </label>
+                        <div>
                         <span>-------------------------------</span>
+                        </div>
                         <CardBody>
                             <Table bordered hover striped>
                                 <thead>
@@ -84,9 +137,8 @@ class Inventory extends Component {
                                     </tr>
                                 </thead>
                                 <tbody id="tbody">
-                                {this.state.inventory}
-                                </tbody>
-                                
+                               {inventory}
+                                </tbody>                              
                             </Table>
                         </CardBody>
                     </div>
@@ -94,7 +146,7 @@ class Inventory extends Component {
             </div>
         </main >
     );
-    }
+}  
 }
 
-export default Inventory;
+export default FilterTable;

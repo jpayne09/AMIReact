@@ -3,36 +3,46 @@ import Header from './HeaderComponent';
 import Sidenav from './Sidenavcomponent';
 import Dashboard from './DashboardComponent';
 import AssetEntry from './AssetEntryComponent';
-import Inventory from './InventoryComponent';
+import FilterTable from './InventoryComponent';
 import Contact from './Contactuscomponent';
-import { Switch, Route, Redirect} from 'react-router-dom';
-import FilterableProductTable from './Tablecomponents/FilterableProductTable';
+import { Switch, Route, Redirect, withRouter} from 'react-router-dom';
+import { connect} from 'react-redux';
+import AssetInformation from './AssetInfoComponent';
+
+const mapStateToProps = (state) => {
+    return {
+        assetData: state.assetData
+    };
+};
 
 class Main extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            assetData: JSON.parse(localStorage.getItem('test1')),
-            filterText : ''
-        }
-    }
-
     render(){
+
+        
+        const assetwithId = ({match}) => {
+            return (
+                <AssetInformation 
+                asset={this.props.assetData.filter(asset => asset.AssetTag === match.params.assetwithId)[0]}
+                />
+
+            );
+        };
         return(
             <div>
                 <Sidenav />
                 <Header />
                 <Switch>
-                    <Route path='/dashboard' render={() => <Dashboard assetData={this.state.assetData} /> }
+                    <Route path='/dashboard' render={() => <Dashboard assetData={this.props.assetData} /> }
                     />
-                    <Route path='/assetentry' component={AssetEntry} />
-                    <Route path='/inventory' render={() => <Inventory assetData={this.state.assetData} filterText={this.state.filterText} /> } />
-                    <Route path='/contact' component={Contact} />
+                    <Route exact path='/assetentry' component={AssetEntry} />
+                    <Route exact path='/inventory' render={() => <FilterTable assetData={this.props.assetData} filterText={this.props.filterText} /> } />
+                    <Route path='/inventory/:assetwithId' component={assetwithId} />
+                    <Route exact path='/contact' component={Contact} />
+                    <Redirect to='dashboard' />
                 </Switch>
-                <Redirect to='dashboard' />
             </div>
         );
     }
 }
-
-export default Main;
+export default withRouter(connect(mapStateToProps)(Main));
+//export default Main;
