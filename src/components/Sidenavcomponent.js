@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
 function closeNav() {
     document.getElementById("sidebarNavigation").style.width = "0";
     document.getElementById("main").style.paddingLeft = "20px";
     document.getElementById("navbar").style.marginLeft = "0";
+    document.getElementById("openNav").style.visibility = "visible";
+
 }
 
 class Sidenav extends Component {

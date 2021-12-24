@@ -1,4 +1,4 @@
-import React, { Component, useMemo, useState, useEffect } from "react";
+import React, { Component } from "react";
 import { Table, Card, CardBody, CardHeader,CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
@@ -92,6 +92,7 @@ class Inventory extends Component{
     render(){
         const filterText = this.props.filterText;
         const inventory = [];
+        if(this.props.assetData){
         this.props.assetData.forEach((asset) => {
             if(asset.AssetTag.indexOf(filterText) === -1){
                 return
@@ -102,6 +103,7 @@ class Inventory extends Component{
                 </tr>
                 )
         });
+        }
         /**if (this.props.assetData != null) {
                 var inventory = this.props.assetData.map(asset => {
                     return (

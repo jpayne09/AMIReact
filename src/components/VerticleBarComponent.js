@@ -10,7 +10,7 @@ if(arrayFromStorage != null){
 }
 
 const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  labels: ['Laptop'],
   datasets: [
     {
       label: '# of Assets',

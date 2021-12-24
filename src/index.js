@@ -6,11 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap-social/bootstrap-social.css';
 import './index.css';
+import { AzureAD } from 'react-aad-msal';
+import { authProvider} from './components/authProvider';
+
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+            <App  />
   </React.StrictMode>,
   document.getElementById('root')
 );

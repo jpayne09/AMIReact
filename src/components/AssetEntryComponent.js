@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, FormFeedback, Label, Input, FormText } from 'reactstrap';
+import {  Form, FormGroup, FormFeedback } from 'reactstrap';
 
 
 class Assetentry extends Component {
